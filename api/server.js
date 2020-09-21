@@ -5,8 +5,8 @@ const cors = require("cors");
 
 //import routers here
 const authRouter = require("../auth/auth-router");
-// const usersRouter = require("../users/users-router");
-// const entriesRouter = require("../entries/entries-router");
+const usersRouter = require("../users/users-router");
+const entriesRouter = require("../entries/entries-router");
 
 const server = express();
 
@@ -21,7 +21,7 @@ server.get("/", (req, res) => {
 
 //use routes here
 server.use("/auth", authRouter);
-// server.use("/users", usersRouter);
-// server.use("/entries", entriesRouter);
+server.use("/users", usersRouter);
+server.use("/entries", entriesRouter);
 
 module.exports = server;
