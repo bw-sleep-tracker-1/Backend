@@ -1,5 +1,7 @@
 // Update with your config settings.
 require('dotenv').config();
+const pgConnection = process.env.DATABASE_URL || 'postgresql://postgres@localhost/auth';
+
 
 module.exports = {
 
@@ -54,7 +56,7 @@ module.exports = {
 
   production: {
     client: 'pg',
-    connection: process.env.DATABASE_URL,
+    connection: pgConnection,
     pool: {
       min: 2,
       max: 10
