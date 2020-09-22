@@ -6,7 +6,7 @@ const db = require("../data/db-helper");
 const router = express.Router();
 
 // POST Registration endpoint
-router.post("/register", (req, res) => {
+router.post("/signup", (req, res) => {
     const user = req.body;
     if(user.username && user.password){
         db.findUserByName(user.username)
@@ -40,6 +40,7 @@ router.post("/login", (req, res) => {
         db.findUserByName(username)
             .then(found => {
                 if(found && bcrypt.compareSync(password, found.password)){
+                    console.log(found.password);
                     const token = generateToken(found);
                     res.status(200).json({
                         message: `${found.username} is now logged in.`,
