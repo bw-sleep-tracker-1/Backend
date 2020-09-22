@@ -11,8 +11,8 @@ const entriesRouter = require("../entries/entries-router");
 const server = express();
 
 server.use(helmet());
-server.use(express.json());
 server.use(cors());
+server.use(express.json());
 server.use(morgan('dev'));
 
 server.get("/", (req, res) => {
