@@ -1,5 +1,6 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const db = require("../data/db-helper");
 
 const router = express.Router();
@@ -34,7 +35,41 @@ router.post("/register", (req, res) => {
 
 // POST Login endpoint
 router.post("/login", (req, res) => {
-    res.send("<h1>Login endpoint</h1>");
+    let { username, password } = req.body;
+    if(username && password){
+        db.findUserByName(username)
+            .then(found => {
+                if(found && bcrypt.compareSync(password, found.password)){
+                    const token = generateToken(found);
+                    res.status(200).json({
+                        message: `${found.username} is now logged in.`,
+                        token: token
+                    });
+                } else {
+                    res.status(401).json({ message: "Invalid credentials" });
+                }
+            })
+            .catch(err => {
+                res.status(500).json({ err: err.message });
+            });
+    } else {
+        res.status(400).json({ message: "Please provide both a username & password" }); 
+    }
 })
+
+function generateToken({ user_id, username }) {
+    const payload = {
+        subject: user_id,
+        username: username
+    };
+
+    const secret = process.env.JWT_SECRET || "super secret code goes here";
+
+    const options = {
+        expiresIn: "8h"
+    }
+
+    return jwt.sign(payload, secret, options);
+}
 
 module.exports = router;
