@@ -32,6 +32,7 @@ module.exports = {
       tableName: 'knex_migrations'
     }
   },
+  
   production: {
     client: 'postgresql',
     connection: {
