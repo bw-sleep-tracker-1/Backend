@@ -5,12 +5,24 @@ const router = express.Router();
 
 //GET all users
 router.get("/", (req, res) => {
-    res.send("<h1>Get all users endpoint</h1>");
+    db.getUsers()
+        .then(users => {
+            res.status(200).json({ users: users });
+        })
+        .catch(err => {
+            res.status(500).json({ error: err.message });
+        });
 })
 
 //GET a specific user
 router.get("/:id", (req, res) => {
-    res.send("<h1>Get a specific user endpoint</h1>");
+    db.findUserById(req.params.id)
+        .then(user => {
+            res.status(200).json({ [user.username]: user });
+        })
+        .catch(err => {
+            res.status(500).json({ error: err.message });
+        });
 })
 
 module.exports = router;
