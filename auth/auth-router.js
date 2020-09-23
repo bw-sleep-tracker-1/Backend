@@ -40,7 +40,6 @@ router.post("/login", (req, res) => {
         db.findUserByName(username)
             .then(found => {
                 if(found && bcrypt.compareSync(password, found.password)){
-                    console.log(found.password);
                     const token = generateToken(found);
                     res.status(200).json({
                         message: `${found.username} is now logged in.`,
