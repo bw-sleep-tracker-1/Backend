@@ -1,4 +1,6 @@
+const e = require("express");
 const express = require("express");
+const { updateEntry } = require("../data/db-helper");
 const db = require("../data/db-helper");
 
 const router = express.Router();
@@ -31,7 +33,23 @@ router.get("/:id", (req, res) => {
 
 //PUT(edit) a specific entry
 router.put("/:id", (req, res) => {
-
+    const changes = req.body;
+    changes.entry_id = req.params.id;
+    if(changes.bedtime && changes.waketime){
+        const bedtime = new Date(changes.bedtime);
+        const waketime = new Date(changes.waketime);
+        const hours = (waketime - bedtime)/3600000;
+        changes.hours = hours;
+        db.updateEntry(changes, req.params.id)
+        .then(updated => {
+            res.status(200).json({ updated: updated });
+        })
+        .catch(err => {
+            res.status(500).json({ error: err.message });
+        });
+    } else {
+        res.status(400).json({ message: "An entry must have a bedtime & waketime" });        
+    }
 })
 
 //DELETE a specific entry

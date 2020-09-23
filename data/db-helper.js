@@ -9,7 +9,7 @@ module.exports = {
     findEntryById,
     findEntriesByUserId,
     addEntry,
-    editEntry,
+    updateEntry,
     deleteEntry,
     register
 };
@@ -56,8 +56,13 @@ function addEntry(entry) {
         });
 }
 
-function editEntry() {
-
+function updateEntry(changes, id) {
+    return db("entries")
+        .where("entry_id", "=", id)
+        .update(changes)
+        .then(() => {
+            return findEntryById(id);
+        })
 }
 
 function deleteEntry(id) {
