@@ -8,6 +8,9 @@ module.exports = {
     getEntries,
     findEntryById,
     findEntriesByUserId,
+    addEntry,
+    updateEntry,
+    deleteEntry,
     register
 };
 
@@ -45,7 +48,45 @@ function findEntriesByUserId(id) {
         .where("user_id", "=", id);
 }
 
+function addEntry(entry) {
+    return db("entries")
+        .insert(entry)
+        .then(id => {
+            return findEntryById(id);
+        });
+}
+
+function updateEntry(changes, id) {
+    return db("entries")
+        .where("entry_id", "=", id)
+        .update(changes)
+        .then(() => {
+            return findEntryById(id);
+        })
+}
+
+function deleteEntry(id) {
+    return findEntryById(id)
+        .then(found => {
+            return db("entries")
+                .where("entry_id", "=", id)
+                .del()
+                .then(() => {
+                    return found;
+                })
+                .catch(err => {
+                    res.status(500).json({ error: err.message });
+                });
+        })
+        .catch(err => {
+            res.status(500).json({ error: err.message });
+        });
+}
+
 function register(user) {
     return db("users")
-        .insert(user);
+        .insert(user)
+        .then(id => {
+            return findUserById(id);
+        });
 }
