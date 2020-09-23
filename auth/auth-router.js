@@ -17,8 +17,8 @@ router.post("/signup", (req, res) => {
                     const rounds = process.env.BCRYPT_ROUNDS || 4;
                     user.password = bcrypt.hashSync(user.password, rounds);
                     db.register(user)
-                        .then(id => {
-                            res.status(201).json({ message: "User registered", userId: id[0] });
+                        .then(user => {
+                            res.status(201).json({ message: "User registered", user: user });
                         })
                         .catch(err => {
                             res.status(500).json({ err: err.message });

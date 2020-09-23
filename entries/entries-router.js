@@ -36,7 +36,13 @@ router.put("/:id", (req, res) => {
 
 //DELETE a specific entry
 router.delete("/:id", (req, res) => {
-
+    db.deleteEntry(req.params.id)
+        .then(deleted => {
+            res.status(200).json({ deleted: deleted });
+        })
+        .catch(err => {
+            res.status(500).json({ error: err.message });
+        })
 })
 
 module.exports = router;
