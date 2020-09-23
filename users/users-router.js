@@ -26,6 +26,17 @@ router.get("/:id", (req, res) => {
 })
 
 //GET a user's entries
+router.get("/:id/entries", (req, res) => {
+    db.findEntriesByUserId(req.params.id)
+        .then(entries => {
+            res.status(200).json({ entries: entries });
+        })
+        .catch(err => {
+            res.status(500).json({ error: err.message });
+        });
+})
+
+//POST an entry for a user
 router.post("/:id/entries", (req, res) => {
 
 })

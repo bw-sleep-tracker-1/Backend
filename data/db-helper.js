@@ -1,3 +1,4 @@
+const { where } = require("./connection");
 const db = require("./connection");
 
 module.exports = {
@@ -5,6 +6,8 @@ module.exports = {
     findUserById,
     findUserByName,
     getEntries,
+    findEntryById,
+    findEntriesByUserId,
     register
 };
 
@@ -29,6 +32,17 @@ function findUserByName(username) {
 
 function getEntries() {
     return db("entries");
+}
+
+function findEntryById(id) {
+    return db("entries")
+        .where("entry_id", "=", id)
+        .first();
+}
+
+function findEntriesByUserId(id) {
+    return db("entries")
+        .where("user_id", "=", id);
 }
 
 function register(user) {
