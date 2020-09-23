@@ -4,6 +4,7 @@ module.exports = {
     getUsers,
     findUserById,
     findUserByName,
+    getEntries,
     register
 };
 
@@ -24,6 +25,10 @@ function findUserByName(username) {
     return db("users")
         .where("username", "=", username)
         .first();
+}
+
+function getEntries() {
+    return db("entries");
 }
 
 function register(user) {

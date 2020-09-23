@@ -25,4 +25,9 @@ router.get("/:id", (req, res) => {
         });
 })
 
+//GET a user's entries
+router.post("/:id/entries", (req, res) => {
+
+})
+
 module.exports = router;
