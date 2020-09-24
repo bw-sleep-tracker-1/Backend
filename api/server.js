@@ -2,6 +2,7 @@ const express = require("express");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const cors = require("cors");
+const authorize = require("../auth/auth-middleware");
 
 //import routers here
 const authRouter = require("../auth/auth-router");
@@ -21,7 +22,7 @@ server.get("/", (req, res) => {
 
 //use routes here
 server.use("/auth", authRouter);
-server.use("/users", usersRouter);
-server.use("/entries", entriesRouter);
+server.use("/users", authorize, usersRouter);
+server.use("/entries", authorize, entriesRouter);
 
 module.exports = server;
