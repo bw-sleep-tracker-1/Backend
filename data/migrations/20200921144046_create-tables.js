@@ -19,7 +19,7 @@ exports.up = function(knex) {
                 .notNullable()
                 .references("user_id")
                 .inTable("users")
-                .onDelete("RESTRICT")
+                .onDelete("CASCADE")
                 .onUpdate("CASCADE");
             tbl.text("bedtime")
                 .notNullable();
