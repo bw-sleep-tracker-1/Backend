@@ -43,6 +43,7 @@ router.post("/login", (req, res) => {
                     const token = generateToken(found);
                     res.status(200).json({
                         message: `${found.username} is now logged in.`,
+                        user_id: found.user_id,
                         token: token
                     });
                 } else {

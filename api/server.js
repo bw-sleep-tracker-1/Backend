@@ -17,7 +17,7 @@ server.use(express.json());
 server.use(morgan('dev'));
 
 server.get("/", (req, res) => {
-    res.send({ api: "running" });
+    res.send({ api: "Sleep Tracker" });
 })
 
 //use routes here
