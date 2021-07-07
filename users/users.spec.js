@@ -4,8 +4,8 @@ const db = require("../data/connection");
 
 let token;
 
-describe("Tests the entries router", () => {
-    describe("Tests the get entries endpoint", () => {
+describe("Tests the users router", () => {
+    describe("Tests the get users endpoint", () => {
 
         beforeAll(async () => {
             await request(server)
@@ -18,7 +18,7 @@ describe("Tests the entries router", () => {
 
         it("Should return a status code of 401 without a token", () => {
             return request(server)
-                .get("/entries")
+                .get("/users")
                 .then(res => {
                     expect(res.status).toBe(401);
                 });
@@ -26,7 +26,7 @@ describe("Tests the entries router", () => {
 
         it("Should return a status code of 200 with a token", () => {
             return request(server)
-                .get("/entries")
+                .get("/users")
                 .set("Authorization", token)
                 .then(res => {
                     expect(res.status).toBe(200);;
@@ -34,10 +34,10 @@ describe("Tests the entries router", () => {
         })
     })
 
-    describe("Tests the get a specific entry endpoint", () => {
+    describe("Tests the get a specific user endpoint", () => {
         it("Should return a status code of 401 without a token", () => {
             return request(server)
-                .get("/entries/1")
+                .get("/users/1")
                 .then(res => {
                     expect(res.status).toBe(401);
                 });
@@ -45,7 +45,7 @@ describe("Tests the entries router", () => {
 
         it("Should return a status code of 200 with a token", () => {
             return request(server)
-                .get("/entries/1")
+                .get("/users/1")
                 .set("Authorization", token)
                 .then(res => {
                     expect(res.status).toBe(200);;
@@ -53,15 +53,10 @@ describe("Tests the entries router", () => {
         })
     })
 
-    describe("Tests the edit entry endpoint", () => {
+    describe("Tests the get a specific user's entries endpoint", () => {
         it("Should return a status code of 401 without a token", () => {
             return request(server)
-                .put("/entries/1")
-                .send({
-                    "bedtime": "2020-09-01T22:00:00.000Z",
-                    "waketime": "2020-09-02T06:00:00.000Z",
-                    "wake_rating": 3
-                })
+                .get("/users/1/entries")
                 .then(res => {
                     expect(res.status).toBe(401);
                 });
@@ -69,34 +64,39 @@ describe("Tests the entries router", () => {
 
         it("Should return a status code of 200 with a token", () => {
             return request(server)
-                .put("/entries/1")
+                .get("/users/1/entries")
                 .set("Authorization", token)
-                .send({
-                    "bedtime": "2020-09-01T22:00:00.000Z",
-                    "waketime": "2020-09-02T06:00:00.000Z",
-                    "wake_rating": 3
-                })
                 .then(res => {
-                    expect(res.status).toBe(200);
+                    expect(res.status).toBe(200);;
                 });
         })
     })
 
-    describe("Tests the delete entry endpoint", () => {
+    describe("Tests the post entry endpoint", () => {
         it("Should return a status code of 401 without a token", () => {
             return request(server)
-                .delete("/entries/1")
+                .post("/users/1/entries")
+                .send({
+                    "bedtime": "2020-09-12T22:00:00.000Z",
+                    "waketime": "2020-09-13T06:00:00.000Z",
+                    "wake_rating": 3
+                })
                 .then(res => {
                     expect(res.status).toBe(401);
                 });
         })
 
-        it("Should return a status code of 200 with a token", () => {
+        it("Should return a status code of 201 with a token", () => {
             return request(server)
-                .delete("/entries/1")
+                .post("/users/1/entries")
                 .set("Authorization", token)
+                .send({
+                    "bedtime": "2020-09-12T22:00:00.000Z",
+                    "waketime": "2020-09-13T06:00:00.000Z",
+                    "wake_rating": 3
+                })
                 .then(res => {
-                    expect(res.status).toBe(200);
+                    expect(res.status).toBe(201);
                 });
         })
     })
